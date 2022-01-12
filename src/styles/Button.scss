@@ -1,8 +1,28 @@
 @import 'config';
 @import 'utilities';
+@import 'node_modules/pixel-borders/src/styles/pixel-borders/pixel-borders-mixins';
 
 .Button {
-  @include button-main;
+  @include pixel-box(
+    $corner-size: 2,
+    $border-size: 4px,
+    $border-color: #000,
+    $background-color: #d4d7df,
+    $border-inset: true,
+    $border-inset-color: rgb(80, 80, 80)
+  );
+  font-family: $font-stack;
   width: 150px;
   height: 75px;
+  font-size: 1rem;
+  transition: 200ms all ease-in-out;
+  &:hover {
+    cursor: pointer;
+    @include pixel-box(
+      $corner-size: 2,
+      $border-size: 4px,
+      $border-color: #000,
+      $background-color: #b7bfd2
+    );
+  }
 }
