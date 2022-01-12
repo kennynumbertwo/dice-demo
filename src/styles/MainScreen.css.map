@@ -1,0 +1,11 @@
+{
+    "version": 3,
+    "mappings": "AAGA,AAAA,oBAAoB,CAAC;EEFnB,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;CFEpB",
+    "sources": [
+        "MainScreen.scss",
+        "_config.scss",
+        "_utilities.scss"
+    ],
+    "names": [],
+    "file": "MainScreen.css"
+}

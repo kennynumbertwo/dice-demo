@@ -1,9 +1,13 @@
-import reactDom from "react-dom";
 import React from 'react';
+import Button from './Button'
+import '../styles/MainScreen.scss';
 
 function MainScreen() {
   return(
-    <div>TESTING</div>
+    <div className='MainScreenContainer'>
+
+      <Button />
+    </div>
   )
 }
 
