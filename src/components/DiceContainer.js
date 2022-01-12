@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DTwenty from './DTwenty';
 import DTen from './DTen';
+import DSix from './DSix';
 import '../styles/DiceContainer.scss';
 
 function DiceContainer() {
@@ -19,10 +20,16 @@ function DiceContainer() {
 
   const handleDiceSelect = (id) => {
     if (id === 'd20') {
+      setDiceRoll(1)
       setSelectedDie(20);
     }
     if (id === 'd10') {
+      setDiceRoll(1)
       setSelectedDie(10);
+    }
+    if (id === 'd6') {
+      setDiceRoll(1)
+      setSelectedDie(6);
     }
   }
 
@@ -40,7 +47,14 @@ function DiceContainer() {
           <p className='dTenNum'>{diceRoll}</p>
         </div>
       )}
+      {selectedDie === 6 && (
+        <div className='dSixContainer'>
+          <DSix />
+          <p className='dSixNum'>{diceRoll}</p>
+        </div>
+      )}
       <div className='selectDieContainer'>
+        <button className='selectButton' type='button' onClick={() => handleDiceSelect('d6')}>d6</button>
         <button className='selectButton' type='button' onClick={() => handleDiceSelect('d10')}>d10</button>
         <button className='selectButton' type='button' onClick={() => handleDiceSelect('d20')}>d20</button>
       </div>

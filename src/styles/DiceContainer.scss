@@ -26,10 +26,22 @@
 .dTenNum {
   position: absolute;
   top: 35%;
-  left: 50%;
+  left: 50.1%;
   transform: translate(-50%, -50%);
   color: black;
   font-size: 1.5rem;
+}
+.dSixContainer {
+  position: relative;
+  text-align: center;
+}
+.dSixNum {
+  position: absolute;
+  top: 35%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-size: 4rem;
 }
 
 .rollButton {
