@@ -19,6 +19,18 @@
   color: black;
   font-size: 1.5rem;
 }
+.dTenContainer {
+  position: relative;
+  text-align: center;
+}
+.dTenNum {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-size: 1.5rem;
+}
 
 .rollButton {
   @include pixel-box(
@@ -31,8 +43,34 @@
   );
   margin-top: 75px;
   font-family: $font-stack;
-  width: 150px;
+  width: 170px;
   height: 75px;
+  font-size: 1rem;
+  transition: 200ms all ease-in-out;
+  &:hover {
+    cursor: pointer;
+    @include pixel-box(
+      $corner-size: 2,
+      $border-size: 4px,
+      $border-color: #000,
+      $background-color: #b7bfd2
+    );
+  }
+}
+
+.selectButton {
+  @include pixel-box(
+    $corner-size: 2,
+    $border-size: 4px,
+    $border-color: #000,
+    $background-color: #d4d7df,
+    $border-inset: true,
+    $border-inset-color: rgb(80, 80, 80)
+  );
+  margin: 75px 30px 0px;
+  font-family: $font-stack;
+  width: 100px;
+  height: 50px;
   font-size: 1rem;
   transition: 200ms all ease-in-out;
   &:hover {
