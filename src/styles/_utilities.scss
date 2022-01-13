@@ -3,6 +3,17 @@
   justify-content: center;
   align-items: center;
 }
+@mixin flex-top {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+@mixin flex-top-column {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
 
 @mixin button-main {
   color: #fff;

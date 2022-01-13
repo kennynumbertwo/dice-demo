@@ -4,44 +4,76 @@
 
 .DiceContainerWrapper {
   font-family: $font-stack;
+  @include flex-top-column;
   height: 100%;
   width: 100%;
-  border: 1px solid red;
+  padding-top: 20px;
 }
 
 .DiceMainContainer {
   @include flex-center;
-  border: 1px solid red;
-  height: 50%;
+  justify-content: space-evenly;
+  width: 100%;
+  .playerSide {
+    width: 60%;
+    height: 400px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    .diceSide {
+      height: 90%;
+      margin-top: 100px;
+    }
+    .swordSide {
+      height: 100%;
+      .swordContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 300px;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      // padding-top: 50px;
+      .playerButtons {
+        display: flex;
+        justify-content: center;
+        align-self: center;
+      }
+      h4 {
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .enemySide {
+    // border: 1px solid blue;
+    width: 35%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .enemyWrapper {
+      height: 100%;
+      .enemyDiceContainer {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 300px;
+        justify-content: center;
+        align-items: center;
+        // border: 1px solid blue;
+      }
+      .enemyButtons {
+        display: flex;
+        justify-content: center;
+        align-self: center;
+      }
+    }
+  }
 }
 
-.dTwentyContainer {
-  position: relative;
-  text-align: center;
-}
-.dTwentyNum {
-  position: absolute;
-  top: 41%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: black;
-  font-size: 1.5rem;
-}
-
-.dSixContainer {
-  position: relative;
-  text-align: center;
-}
-.dSixNum {
-  position: absolute;
-  top: 35%;
-  left: 49%;
-  transform: translate(-50%, -50%);
-  color: black;
-  font-size: 4rem;
-}
-
-.rollButton {
+.selectButton {
   @include pixel-box(
     $corner-size: 2,
     $border-size: 4px,
@@ -50,10 +82,10 @@
     $border-inset: true,
     $border-inset-color: rgb(80, 80, 80)
   );
-  margin-top: 75px;
+  margin: 30px 30px 0px;
   font-family: $font-stack;
-  width: 170px;
-  height: 75px;
+  width: 65px;
+  height: 45px;
   font-size: 1rem;
   transition: 200ms all ease-in-out;
   &:hover {
@@ -67,28 +99,50 @@
   }
 }
 
-.selectButton {
+.bottomMenu {
   @include pixel-box(
     $corner-size: 2,
     $border-size: 4px,
     $border-color: #000,
-    $background-color: #d4d7df,
+    $background-color: #2248b1,
     $border-inset: true,
     $border-inset-color: rgb(80, 80, 80)
   );
-  margin: 75px 30px 0px;
-  font-family: $font-stack;
-  width: 100px;
-  height: 50px;
-  font-size: 1rem;
-  transition: 200ms all ease-in-out;
+  color: white;
+  height: 420px;
+  width: 95%;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   &:hover {
-    cursor: pointer;
+    background-color: #2248b1;
+  }
+  .rollButton {
     @include pixel-box(
       $corner-size: 2,
       $border-size: 4px,
       $border-color: #000,
-      $background-color: #b7bfd2
+      $background-color: #d4d7df,
+      $border-inset: true,
+      $border-inset-color: rgb(80, 80, 80)
     );
+    margin: auto 10px 10px;
+    font-family: $font-stack;
+    width: 170px;
+    height: 75px;
+    font-size: 1rem;
+    transition: 200ms all ease-in-out;
+    z-index: 1;
+    &:hover {
+      cursor: pointer;
+      @include pixel-box(
+        $corner-size: 2,
+        $border-size: 4px,
+        $border-color: #000,
+        $background-color: #b7bfd2
+      );
+    }
   }
 }

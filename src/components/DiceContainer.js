@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import DTwenty from './DTwenty';
 import DTen from './DTen';
-import DSix from './DSix';
 import '../styles/DiceContainer.scss';
+import Sword from './Sword';
 
 function DiceContainer() {
-  const [selectedDie, setSelectedDie] = useState(20);
   // PLAYER STATE
   const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
   const [playerAttack, setPlayerAttack] = useState(12);
@@ -37,31 +36,6 @@ function DiceContainer() {
     setDamageDone(damage);
   }, [enemyDiceRoll, playerDiceRoll]);
 
-  const rollDice = (sides) => {
-    const roll = Math.floor(Math.random() * sides + 1);
-    return roll;
-  }
-
-  const handleRollDice = (sides) => {
-    const total = rollDice(sides);
-    setDiceRoll(total);
-  }
-
-  const handleDiceSelect = (id) => {
-    if (id === 'd20') {
-      setDiceRoll(1)
-      setSelectedDie(20);
-    }
-    if (id === 'd10') {
-      setDiceRoll(1)
-      setSelectedDie(10);
-    }
-    if (id === 'd6') {
-      setDiceRoll(1)
-      setSelectedDie(6);
-    }
-  }
-
   const rollPlayerDie = () => {
     let roll = Math.floor(Math.random() * 20 + 1);
     console.log('running')
@@ -88,16 +62,19 @@ function DiceContainer() {
   const handleAddAttack = () => {
     setPlayerAttack(playerAttack + 1)
   }
+
   const handleRemoveAttack = () => {
-    if (playerAttack >= 1)
-    setPlayerAttack(playerAttack - 1)
+    if (playerAttack >= 1) {
+      setPlayerAttack(playerAttack - 1)
+    }
   }
 
   const handleAddDie = () => {
-    if (enemyDiceQty <= 5) {
+    if (enemyDiceQty < 5) {
       setEnemyDiceQty(enemyDiceQty + 1)
     }
   }
+
   const handleRemoveDie = () => {
     if (enemyDiceQty > 1) {
       setEnemyDiceQty(enemyDiceQty - 1)
@@ -109,40 +86,49 @@ function DiceContainer() {
     rollEnemyDice(10);
   }
 
-  return(
+  return (
     <div className='DiceContainerWrapper'>
       <div className='DiceMainContainer'>
-        <div className='playerDiceContainer'>
-          <div className='dTwentyContainer'>
-            <DTwenty />
-            <p className='dTwentyNum'>{playerDiceRoll}</p>
+        <div className='playerSide'>
+          <div className='diceSide'>
+            <DTwenty roll={playerDiceRoll} size={3.0} fontSize={1.4} fontTop={39} />
+          </div>
+          <h1>+</h1>
+          <div className='swordSide'>
+            <div className='swordContainer'>
+              <Sword />
+              <h4>Attack Power: {playerAttack}</h4>
+            </div>
+            <div className='playerButtons'>
+              <button className='selectButton' type='button' onClick={handleRemoveAttack}>-</button>
+              <button className='selectButton' type='button' onClick={handleAddAttack}>+</button>
+            </div>
           </div>
         </div>
-        <div className='enemyDiceContainer'>
-          {enemyDice.map(die => {
-            if (die.threshold <= enemyDiceQty) {
-              return <DTen key={die.name} roll={die.roll} size={2} fontSize={1.2} fontTop={25}/>
-            }
-            return null;
-          })}
+        <h1>-</h1>
+        <div className='enemySide'>
+          <div className='enemyWrapper'>
+            <div className='enemyDiceContainer'>
+              {enemyDice.map(die => {
+                if (die.threshold <= enemyDiceQty) {
+                  return <DTen key={die.name} roll={die.roll} size={2} fontSize={1.2} fontTop={25} />
+                }
+                return null;
+              })}
+            </div>
+            <div className='enemyButtons'>
+              <button className='selectButton' type='button' onClick={handleRemoveDie}>-</button>
+              <button className='selectButton' type='button' onClick={handleAddDie}>+</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div className='selectDieContainer'>
-        {/* <button className='selectButton' type='button' onClick={() => handleDiceSelect('d20')}>d20</button> */}
-        <div className='playerButtons'>
-          <h4>Player Attack: {playerAttack}</h4>
-          <h4>Player Total Damge: {playerAttack + playerDiceRoll}</h4>
-          <button className='selectButton' type='button' onClick={handleRemoveAttack}>-</button>
-          <button className='selectButton' type='button' onClick={handleAddAttack}>+</button>
-        </div>
-        <div className='enemyButtons'>
-          <h4>Enemy Damage: {enemyDiceRoll}</h4>
-          <button className='selectButton' type='button' onClick={handleRemoveDie}>-</button>
-          <button className='selectButton' type='button' onClick={handleAddDie}>+</button>
-        </div>
-        <h4>Damage Done: {damageDone > 0 ? damageDone : '0'}</h4>
+      <div className='bottomMenu'>
+        <h4>Player Total Damage: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>
+        <h4>Enemy Defense: {enemyDiceRoll}</h4>
+        <h4>Damage Done: {damageDone > 0 && playerDiceRoll > 0 ? damageDone : '0'}</h4>
+        <button className='rollButton' type='button' onClick={handleRoll}>Roll!</button>
       </div>
-      <button className='rollButton' type='button' onClick={handleRoll}>Roll!</button>
     </div>
   )
 }

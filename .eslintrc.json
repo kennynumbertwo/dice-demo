@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb", "prettier"],
+  "extends": ["airbnb"],
   "plugins": ["prettier"],
   "rules": {
     "dot-notation": 0,
@@ -39,6 +39,10 @@
     "arrow-body-style": 0,
     "react/no-unused-state": 0,
     "react/jsx-max-props-per-line": [1, { "maximum": 1, "when": "multiline" }],
-    "quote-props": 0
+    "quote-props": 0,
+    "object-curly-spacing": 0,
+    "comma-dangle": 0,
+    "semi": 0,
+    "jsx-quotes": 0
   }
 }
