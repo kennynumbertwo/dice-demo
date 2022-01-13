@@ -4,9 +4,17 @@
 
 .DiceContainerWrapper {
   font-family: $font-stack;
-  height: 50%;
+  height: 100%;
   width: 100%;
+  border: 1px solid red;
 }
+
+.DiceMainContainer {
+  @include flex-center;
+  border: 1px solid red;
+  height: 50%;
+}
+
 .dTwentyContainer {
   position: relative;
   text-align: center;
@@ -19,18 +27,7 @@
   color: black;
   font-size: 1.5rem;
 }
-.dTenContainer {
-  position: relative;
-  text-align: center;
-}
-.dTenNum {
-  position: absolute;
-  top: 35%;
-  left: 50.1%;
-  transform: translate(-50%, -50%);
-  color: black;
-  font-size: 1.5rem;
-}
+
 .dSixContainer {
   position: relative;
   text-align: center;

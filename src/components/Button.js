@@ -3,8 +3,8 @@ import '../styles/Button.scss';
 
 function Button() {
   return (
-    <button className='Button'>
-      Fight!
+    <button className='Button' type="button">
+     Fight!
     </button>
   )
 }
