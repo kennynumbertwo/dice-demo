@@ -10,6 +10,47 @@
   padding-top: 20px;
 }
 
+.lifeBarContainer {
+  @include pixel-box(
+    $corner-size: 2,
+    $border-size: 4px,
+    $border-color: #000,
+    $background-color: #2248b1,
+    $border-inset: true,
+    $border-inset-color: rgb(80, 80, 80)
+  );
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  &:hover {
+    background-color: #2248b1;
+  }
+}
+
+.playerHealth {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 10px;
+  p {
+    font-size: 0.9rem;
+    padding-left: 5px;
+  }
+}
+.enemyHealth {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  padding: 10px;
+  p {
+    font-size: 0.9rem;
+    padding-right: 5px;
+  }
+}
+
 .DiceMainContainer {
   @include flex-center;
   justify-content: space-evenly;

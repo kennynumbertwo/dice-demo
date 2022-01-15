@@ -3,14 +3,20 @@ import DTwenty from './DTwenty';
 import DTen from './DTen';
 import '../styles/DiceContainer.scss';
 import Sword from './Sword';
+import LifeBarPlayer from './LifeBarPlayer';
+import LifeBarEnemy from './LifeBarEnemy';
 
 function DiceContainer() {
   // PLAYER STATE
+  const [maxHp, setMaxHp] = useState(100);
+  const [currentHp, SetCurrentHp] = useState(100);
   const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
   const [playerAttack, setPlayerAttack] = useState(12);
   const [damageDone, setDamageDone] = useState(0);
 
   // ENEMY STATE
+  const [maxEnemyHp, setMaxEnemyHp] = useState(100);
+  const [currentEnemyHp, SetCurrentEnemyHp] = useState(100);
   const [enemyDiceQty, setEnemyDiceQty] = useState(1);
   const [enemyDiceRoll, setEnemyDiceRoll] = useState(0);
   const [enemyDice, setEnemyDice] = useState([
@@ -88,6 +94,16 @@ function DiceContainer() {
 
   return (
     <div className='DiceContainerWrapper'>
+      <div className='lifeBarContainer'>
+        <div className='playerHealth'>
+          <LifeBarPlayer width={44 * 4} current={66} max={100} />
+          <p>{`Player HP: ${currentHp} / ${maxHp}`}</p>
+        </div>
+        <div className='enemyHealth'>
+          <LifeBarEnemy width={44 * 4} current={50} max={100} />
+          <p>{`Enemy HP: ${currentEnemyHp} / ${maxEnemyHp}`}</p>
+        </div>
+      </div>
       <div className='DiceMainContainer'>
         <div className='playerSide'>
           <div className='diceSide'>
