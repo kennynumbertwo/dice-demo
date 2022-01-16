@@ -4,7 +4,7 @@ import DiceContainer from './DiceContainer';
 import '../styles/MainScreen.scss';
 
 function MainScreen() {
-  return(
+  return (
     <div className='MainScreenContainer'>
       <DiceContainer />
     </div>

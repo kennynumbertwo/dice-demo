@@ -4,7 +4,7 @@ import '../styles/Button.scss';
 function Button() {
   return (
     <button className='Button' type="button">
-     Fight!
+      Fight!
     </button>
   )
 }
