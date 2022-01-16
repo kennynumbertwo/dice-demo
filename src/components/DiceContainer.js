@@ -13,6 +13,7 @@ function DiceContainer() {
   const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
   const [playerAttack, setPlayerAttack] = useState(12);
   const [damageDone, setDamageDone] = useState(0);
+  const [dTwenyManual, setDTwentyManual] = useState(0);
 
   // ENEMY STATE
   const [maxEnemyHp, setMaxEnemyHp] = useState(100);
@@ -26,6 +27,9 @@ function DiceContainer() {
     {name: 'diceFour', roll: 0, threshold: 4},
     {name: 'diceFice', roll: 0, threshold: 5}
   ]);
+
+  // GENERIC STATE
+  const [warningText, setWarningText] = useState('');
 
   useEffect(() => {
     setEnemyDice([
@@ -94,8 +98,31 @@ function DiceContainer() {
   }
 
   const handleRoll = () => {
-    rollPlayerDie();
-    rollEnemyDice(10);
+    if (dTwenyManual > 20) {
+      setWarningText(`Are you sure you rolled a ${dTwenyManual} on a 20 sided die?`)
+      setTimeout(() => {
+        setWarningText('');
+        setPlayerDiceRoll(0);
+        setDTwentyManual(0);
+        setEnemyDiceRoll(0);
+        setEnemyDice([
+          {name: 'diceOne', roll: 0, threshold: 1},
+          {name: 'diceTwo', roll: 0, threshold: 2},
+          {name: 'diceThree', roll: 0, threshold: 3},
+          {name: 'diceFour', roll: 0, threshold: 4},
+          {name: 'diceFice', roll: 0, threshold: 5}
+        ])
+      }, 2000)
+    } else {
+      if (dTwenyManual > 0) {
+        const roll = Number(dTwenyManual);
+        setDTwentyManual(0);
+        setPlayerDiceRoll(roll);
+      } else {
+        rollPlayerDie();
+      }
+      rollEnemyDice(10);
+    }
   }
 
   return (
@@ -114,6 +141,7 @@ function DiceContainer() {
         <div className='playerSide'>
           <div className='diceSide'>
             <DTwenty roll={playerDiceRoll} size={3.0} fontSize={1.4} fontTop={39} />
+            <input className='diceInput' value={dTwenyManual} type='number' onChange={(e) => setDTwentyManual(e.target.value)} />
           </div>
           <h1>+</h1>
           <div className='swordSide'>
@@ -146,9 +174,17 @@ function DiceContainer() {
         </div>
       </div>
       <div className='bottomMenu'>
-        <h4>Player Total Damage: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>
-        <h4>Enemy Defense: {enemyDiceRoll}</h4>
-        <h4>Damage Done: {damageDone > 0 && playerDiceRoll > 0 ? damageDone : '0'}</h4>
+        {warningText && <div className='warning'>{warningText}</div>}
+        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Damage: {(playerAttack + playerDiceRoll) * 2}</h4>}
+        {playerDiceRoll < 20 && !warningText && <h4>Player Total Damage: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>}
+        {!warningText && (
+          <>
+            <h4>Enemy Defense: {enemyDiceRoll}</h4>
+            {enemyDiceRoll > 0 && (
+              <h4>Damage Done: {damageDone > 0 && playerDiceRoll > 0 ? damageDone : 'The enemy blocked the attack!'}</h4>
+            )}
+          </>
+        )}
         <button className='rollButton' type='button' onClick={handleRoll}>Roll!</button>
       </div>
     </div>
