@@ -223,8 +223,8 @@ function DiceContainer() {
       </div>
       <div className='bottomMenu'>
         {warningText && <div className='warning'>{warningText}</div>}
-        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Damage: {(playerAttack + playerDiceRoll) * 2}</h4>}
-        {playerDiceRoll < 20 && !warningText && <h4>Player Total Damage: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>}
+        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Attack: {(playerAttack + playerDiceRoll) * 2}</h4>}
+        {playerDiceRoll < 20 && !warningText && <h4>Player Total Attack: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>}
         {!warningText && (
           <>
             <h4>Enemy Defense: {enemyDiceRoll}</h4>
