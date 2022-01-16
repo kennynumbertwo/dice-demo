@@ -11,6 +11,27 @@
   color: white;
 }
 
+.playerHp {
+  z-index: 1;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  .slash {
+    font-size: 1.3rem;
+    margin-left: 10px;
+  }
+}
+.enemyHp {
+  z-index: 1;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  .slash {
+    font-size: 1.3rem;
+    margin-left: 10px;
+  }
+}
+
 .lifeBarContainer {
   @include pixel-box(
     $corner-size: 2,
@@ -157,6 +178,21 @@
   margin: 50px;
   text-align: center;
 }
+.hpInput {
+  @include pixel-box(
+    $corner-size: 2,
+    $border-size: 4px,
+    $border-color: black,
+    $background-color: white,
+    $border-inset: false,
+    $border-inset-color: rgb(80, 80, 80)
+  );
+  font-family: $font-stack;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  margin-left: 10px;
+}
 
 .bottomMenu {
   @include pixel-box(
@@ -207,5 +243,32 @@
   }
   .warning {
     margin-top: 50px;
+  }
+}
+
+.resetButton {
+  @include pixel-box(
+    $corner-size: 2,
+    $border-size: 4px,
+    $border-color: #000,
+    $background-color: #d4d7df,
+    $border-inset: true,
+    $border-inset-color: rgb(80, 80, 80)
+  );
+  margin: auto 10px 10px;
+  font-family: $font-stack;
+  width: 100px;
+  height: 40px;
+  font-size: 0.8rem;
+  transition: 200ms all ease-in-out;
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
+    @include pixel-box(
+      $corner-size: 2,
+      $border-size: 4px,
+      $border-color: #000,
+      $background-color: #b7bfd2
+    );
   }
 }

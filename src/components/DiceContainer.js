@@ -9,7 +9,7 @@ import LifeBarEnemy from './LifeBarEnemy';
 function DiceContainer() {
   // PLAYER STATE
   const [maxHp, setMaxHp] = useState(100);
-  const [currentHp, SetCurrentHp] = useState(100);
+  const [currentHp, setCurrentHp] = useState(100);
   const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
   const [playerAttack, setPlayerAttack] = useState(12);
   const [damageDone, setDamageDone] = useState(0);
@@ -17,7 +17,7 @@ function DiceContainer() {
 
   // ENEMY STATE
   const [maxEnemyHp, setMaxEnemyHp] = useState(100);
-  const [currentEnemyHp, SetCurrentEnemyHp] = useState(100);
+  const [currentEnemyHp, setCurrentEnemyHp] = useState(100);
   const [enemyDiceQty, setEnemyDiceQty] = useState(1);
   const [enemyDiceRoll, setEnemyDiceRoll] = useState(0);
   const [enemyDice, setEnemyDice] = useState([
@@ -44,23 +44,27 @@ function DiceContainer() {
   useEffect(() => {
     if (playerDiceRoll === 20) {
       const damage = (playerDiceRoll + playerAttack) * 2 - enemyDiceRoll
+      if (playerDiceRoll !== 0) {
+        setCurrentEnemyHp(currentEnemyHp - damage);
+      }
       setDamageDone(damage);
     }
     if (playerDiceRoll < 20) {
       const damage = (playerDiceRoll + playerAttack) - enemyDiceRoll
+      if (playerDiceRoll !== 0) {
+        setCurrentEnemyHp(currentEnemyHp - damage);
+      }
       setDamageDone(damage);
     }
   }, [enemyDiceRoll, playerDiceRoll]);
 
   const rollPlayerDie = () => {
     let roll = Math.floor(Math.random() * 20 + 1);
-    console.log('running')
     setPlayerDiceRoll(roll);
   }
 
   const rollEnemyDice = (sides) => {
     let newDice = [...enemyDice]
-    console.log(newDice)
     enemyDice.forEach((die, index) => {
       if (die.threshold <= enemyDiceQty) {
         let roll = Math.floor(Math.random() * sides + 1);
@@ -70,7 +74,6 @@ function DiceContainer() {
     const newTotalRoll = newDice.reduce((totalRoll, die) => {
       return die.roll + totalRoll;
     }, 0)
-    console.log(newDice)
     setEnemyDice(newDice);
     setEnemyDiceRoll(newTotalRoll)
   }
@@ -125,16 +128,61 @@ function DiceContainer() {
     }
   }
 
+  const handleReset = () => {
+    setMaxEnemyHp(100);
+    setCurrentEnemyHp(100);
+    setDTwentyManual(0);
+    setPlayerDiceRoll(0);
+    setEnemyDiceRoll(0);
+    setEnemyDice([
+      {name: 'diceOne', roll: 0, threshold: 1},
+      {name: 'diceTwo', roll: 0, threshold: 2},
+      {name: 'diceThree', roll: 0, threshold: 3},
+      {name: 'diceFour', roll: 0, threshold: 4},
+      {name: 'diceFice', roll: 0, threshold: 5}
+    ]);
+  }
+
+  const handleSetMaxEnemyHp = (e) => {
+    if (e.target.value > 1) {
+      setCurrentEnemyHp(e.target.value);
+      setMaxEnemyHp(e.target.value);
+    }
+    if (e.target.value <= 1) {
+      setCurrentEnemyHp(1)
+    }
+    setMaxEnemyHp(e.target.value);
+  }
+
   return (
     <div className='DiceContainerWrapper'>
       <div className='lifeBarContainer'>
         <div className='playerHealth'>
-          <LifeBarPlayer width={44 * 4} current={33} max={100} />
-          <p>{`Player HP: ${currentHp} / ${maxHp}`}</p>
+          <LifeBarPlayer width={44 * 4} current={currentHp} max={maxHp} />
+          <div className='playerHp'>
+            <p>Player HP:</p>
+            <input className='hpInput' value={currentHp} type='number' onChange={(e) => setCurrentHp(e.target.value)} />
+            <p className='slash'>/</p>
+            <input className='hpInput' value={maxHp} type='number' onChange={(e) => setMaxHp(e.target.value)} />
+          </div>
         </div>
         <div className='enemyHealth'>
-          <LifeBarEnemy width={44 * 4} current={88} max={100} />
-          <p>{`Enemy HP: ${currentEnemyHp} / ${maxEnemyHp}`}</p>
+          <LifeBarEnemy width={44 * 4} current={currentEnemyHp} max={maxEnemyHp} />
+          <div className='enemyHp'>
+            {currentEnemyHp > 0 ? (
+              <>
+                <p>Enemy HP:</p>
+                <input className='hpInput' value={currentEnemyHp} type='number' onChange={(e) => setCurrentEnemyHp(e.target.value)} />
+                <p className='slash'>/</p>
+                <input className='hpInput' value={maxEnemyHp} type='number' onChange={(e) => handleSetMaxEnemyHp(e)} />
+              </>
+            ) : (
+              <>
+                <p>Enemy Defeated!</p>
+                <button className='resetButton' type='button' onClick={handleReset}>Reset</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <div className='DiceMainContainer'>
@@ -180,8 +228,11 @@ function DiceContainer() {
         {!warningText && (
           <>
             <h4>Enemy Defense: {enemyDiceRoll}</h4>
-            {enemyDiceRoll > 0 && (
-              <h4>Damage Done: {damageDone > 0 && playerDiceRoll > 0 ? damageDone : 'The enemy blocked the attack!'}</h4>
+            {enemyDiceRoll > 0 && damageDone > 0 && (
+              <h4>Damage Done: {damageDone > 0 && playerDiceRoll > 0 && damageDone}</h4>
+            )}
+            {enemyDiceRoll > 0 && damageDone <= 0 && (
+              <h4>The enemy blocked the attack!</h4>
             )}
           </>
         )}
