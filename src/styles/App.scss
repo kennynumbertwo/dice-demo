@@ -1,6 +1,24 @@
 .App {
   text-align: center;
-  background-color: rgb(205, 216, 232);
+  background-color: #0c1324;
   width: 100vw;
   height: 100vh;
+  background-image: url('../../public/forest_mid.png');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 1200px) {
+  .App {
+    background-image: url('../../public/forest_mid_small.png');
+    background-size: 110%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .App {
+    background-image: url('../../public/forest_small.png');
+    background-size: 100%;
+  }
 }
