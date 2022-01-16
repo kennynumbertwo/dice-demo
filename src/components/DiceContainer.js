@@ -38,8 +38,14 @@ function DiceContainer() {
   }, [enemyDiceQty])
 
   useEffect(() => {
-    const damage = (playerDiceRoll + playerAttack) - enemyDiceRoll
-    setDamageDone(damage);
+    if (playerDiceRoll === 20) {
+      const damage = (playerDiceRoll + playerAttack) * 2 - enemyDiceRoll
+      setDamageDone(damage);
+    }
+    if (playerDiceRoll < 20) {
+      const damage = (playerDiceRoll + playerAttack) - enemyDiceRoll
+      setDamageDone(damage);
+    }
   }, [enemyDiceRoll, playerDiceRoll]);
 
   const rollPlayerDie = () => {
@@ -96,11 +102,11 @@ function DiceContainer() {
     <div className='DiceContainerWrapper'>
       <div className='lifeBarContainer'>
         <div className='playerHealth'>
-          <LifeBarPlayer width={44 * 4} current={66} max={100} />
+          <LifeBarPlayer width={44 * 4} current={33} max={100} />
           <p>{`Player HP: ${currentHp} / ${maxHp}`}</p>
         </div>
         <div className='enemyHealth'>
-          <LifeBarEnemy width={44 * 4} current={50} max={100} />
+          <LifeBarEnemy width={44 * 4} current={88} max={100} />
           <p>{`Enemy HP: ${currentEnemyHp} / ${maxEnemyHp}`}</p>
         </div>
       </div>
