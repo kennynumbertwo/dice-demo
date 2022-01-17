@@ -44,14 +44,14 @@ function DiceContainer() {
   useEffect(() => {
     if (playerDiceRoll === 20) {
       const damage = (playerDiceRoll + playerAttack) * 2 - enemyDiceRoll
-      if (playerDiceRoll !== 0) {
+      if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
       setDamageDone(damage);
     }
     if (playerDiceRoll < 20) {
       const damage = (playerDiceRoll + playerAttack) - enemyDiceRoll
-      if (playerDiceRoll !== 0) {
+      if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
       setDamageDone(damage);
