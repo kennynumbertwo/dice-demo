@@ -42,6 +42,18 @@ function DiceContainer() {
   }, [enemyDiceQty])
 
   useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeydown);
+  }, [])
+
+  // Handler for the keydown event listener
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleRoll();
+    }
+  };
+
+  useEffect(() => {
     if (playerDiceRoll === 20) {
       const damage = (playerDiceRoll + playerAttack - enemyDiceRoll) * 2;
       if (playerDiceRoll !== 0 && damage > 0) {
