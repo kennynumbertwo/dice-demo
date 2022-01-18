@@ -43,7 +43,7 @@ function DiceContainer() {
 
   useEffect(() => {
     if (playerDiceRoll === 20) {
-      const damage = (playerDiceRoll + playerAttack) * 2 - enemyDiceRoll
+      const damage = (playerDiceRoll + playerAttack - enemyDiceRoll) * 2;
       if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
@@ -223,13 +223,13 @@ function DiceContainer() {
       </div>
       <div className='bottomMenu'>
         {warningText && <div className='warning'>{warningText}</div>}
-        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Attack: {(playerAttack + playerDiceRoll) * 2}</h4>}
+        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Attack: {playerAttack + playerDiceRoll}</h4>}
         {playerDiceRoll < 20 && !warningText && <h4>Player Total Attack: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>}
         {!warningText && (
           <>
             <h4>Enemy Defense: {enemyDiceRoll}</h4>
             {enemyDiceRoll > 0 && damageDone > 0 && (
-              <h4>Damage Done: {damageDone > 0 && playerDiceRoll > 0 && damageDone}</h4>
+              <h4>{ playerDiceRoll === 20 ? 'Critical Damage Done' : 'Damage Done'}: {damageDone > 0 && playerDiceRoll > 0 && damageDone}</h4>
             )}
             {enemyDiceRoll > 0 && damageDone <= 0 && (
               <h4>The enemy blocked the attack!</h4>
