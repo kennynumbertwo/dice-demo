@@ -17,10 +17,11 @@ function enemyDiceReducer(state, action) {
         return { ...state, count: state.count - action.amount };
       } return state;
     case 'ROLL':
-      return { ...state, dice: action.dice };
+      return { ...state, roll: action.roll, dice: action.dice };
     case 'RESET_DICE':
       return {
         ...state,
+        roll: 0,
         dice: [
           {name: 'diceOne', roll: 0, threshold: 1},
           {name: 'diceTwo', roll: 0, threshold: 2},
@@ -43,6 +44,7 @@ function DiceContainer() {
   // ENEMY STATE
   const [enemyDice, dispatchEnemyDice] = useReducer(enemyDiceReducer, {
     count: 1,
+    roll: 0,
     dice: [
       {name: 'diceOne', roll: 0, threshold: 1},
       {name: 'diceTwo', roll: 0, threshold: 2},
@@ -53,7 +55,6 @@ function DiceContainer() {
   })
   const [maxEnemyHp, setMaxEnemyHp] = useState(100);
   const [currentEnemyHp, setCurrentEnemyHp] = useState(100);
-  const [enemyDiceRoll, setEnemyDiceRoll] = useState(0);
 
   // GENERIC STATE
   const [warningText, setWarningText] = useState('');
@@ -63,33 +64,21 @@ function DiceContainer() {
   }, [enemyDice.count])
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeydown);
-  }, [])
-
-  // Handler for the keydown event listener
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleRoll();
-    }
-  };
-
-  useEffect(() => {
     if (playerDiceRoll === 20) {
-      const damage = (playerDiceRoll + playerAttack - enemyDiceRoll) * 2;
+      const damage = (playerDiceRoll + playerAttack - enemyDice.roll) * 2;
       if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
       setDamageDone(damage);
     }
     if (playerDiceRoll < 20) {
-      const damage = (playerDiceRoll + playerAttack) - enemyDiceRoll
+      const damage = (playerDiceRoll + playerAttack) - enemyDice.roll
       if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
       setDamageDone(damage);
     }
-  }, [enemyDiceRoll, playerDiceRoll]);
+  }, [enemyDice.roll, playerDiceRoll]);
 
   const rollPlayerDie = () => {
     let roll = Math.floor(Math.random() * 20 + 1);
@@ -107,8 +96,7 @@ function DiceContainer() {
     const newTotalRoll = newDice.reduce((totalRoll, die) => {
       return die.roll + totalRoll;
     }, 0)
-    dispatchEnemyDice({ type: 'ROLL', dice: newDice});
-    setEnemyDiceRoll(newTotalRoll)
+    dispatchEnemyDice({ type: 'ROLL', roll: newTotalRoll, dice: newDice});
   }
 
   const handleAddAttack = () => {
@@ -128,7 +116,6 @@ function DiceContainer() {
         setWarningText('');
         setPlayerDiceRoll(0);
         setDTwentyManual(0);
-        setEnemyDiceRoll(0);
         dispatchEnemyDice({type: 'RESET_DICE'})
       }, 2000)
     } else {
@@ -148,7 +135,6 @@ function DiceContainer() {
     setCurrentEnemyHp(100);
     setDTwentyManual(0);
     setPlayerDiceRoll(0);
-    setEnemyDiceRoll(0);
     dispatchEnemyDice({type: 'RESET_DICE'})
   }
 
@@ -236,11 +222,11 @@ function DiceContainer() {
         {playerDiceRoll < 20 && !warningText && <h4>Player Total Attack: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>}
         {!warningText && (
           <>
-            <h4>Enemy Defense: {enemyDiceRoll}</h4>
-            {enemyDiceRoll > 0 && damageDone > 0 && (
+            <h4>Enemy Defense: {enemyDice.roll}</h4>
+            {enemyDice.roll > 0 && damageDone > 0 && (
               <h4>{ playerDiceRoll === 20 ? 'Critical Damage Done' : 'Damage Done'}: {damageDone > 0 && playerDiceRoll > 0 && damageDone}</h4>
             )}
-            {enemyDiceRoll > 0 && damageDone <= 0 && (
+            {enemyDice.roll > 0 && damageDone <= 0 && (
               <h4>The enemy blocked the attack!</h4>
             )}
           </>
