@@ -3,7 +3,6 @@ import DTwenty from './DTwenty';
 import DTen from './DTen';
 import '../styles/DiceContainer.scss';
 import Sword from './Sword';
-import SwordTwo from './SwordTwo';
 import LifeBarPlayer from './LifeBarPlayer';
 import LifeBarEnemy from './LifeBarEnemy';
 import enemyDiceReducer from '../reducers/enemyDice.reducer';
@@ -23,6 +22,13 @@ function playerReducer(state, action) {
         return { ...state, currentHP: state.maxHP }
       }
       return { ...state, currentHP: action.currentHP }
+    case 'INCREMENT_ATTACK':
+      return { ...state, attack: state.attack + action.attack}
+    case 'DECREMENT_ATTACK':
+      if (state.attack > 0) {
+        return { ...state, attack: state.attack - action.attack}
+      }
+      return state;
     default:
       return state;
   }
@@ -33,9 +39,9 @@ function DiceContainer() {
   const [player, dispatchPlayer] = useReducer(playerReducer, {
     maxHP: 100,
     currentHP: 100,
+    attack: 0,
   })
   const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
-  const [playerAttack, setPlayerAttack] = useState(12);
   const [damageDone, setDamageDone] = useState(0);
   const [dTwenyManual, setDTwentyManual] = useState(0);
 
@@ -63,14 +69,14 @@ function DiceContainer() {
 
   useEffect(() => {
     if (playerDiceRoll === 20) {
-      const damage = (playerDiceRoll + playerAttack - enemyDice.roll) * 2;
+      const damage = (playerDiceRoll + player.attack - enemyDice.roll) * 2;
       if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
       setDamageDone(damage);
     }
     if (playerDiceRoll < 20) {
-      const damage = (playerDiceRoll + playerAttack) - enemyDice.roll
+      const damage = (playerDiceRoll + player.attack) - enemyDice.roll
       if (playerDiceRoll !== 0 && damage > 0) {
         setCurrentEnemyHp(currentEnemyHp - damage);
       }
@@ -95,16 +101,6 @@ function DiceContainer() {
       return die.roll + totalRoll;
     }, 0)
     dispatchEnemyDice({ type: 'ROLL', roll: newTotalRoll, dice: newDice});
-  }
-
-  const handleAddAttack = () => {
-    setPlayerAttack(playerAttack + 1)
-  }
-
-  const handleRemoveAttack = () => {
-    if (playerAttack >= 1) {
-      setPlayerAttack(playerAttack - 1)
-    }
   }
 
   const handleRoll = () => {
@@ -188,11 +184,11 @@ function DiceContainer() {
           <div className='swordSide'>
             <div className='swordContainer'>
               <Sword />
-              <h4>Attack Power: {playerAttack}</h4>
+              <h4>Attack Power: {player.attack}</h4>
             </div>
             <div className='playerButtons'>
-              <button className='selectButton' type='button' onClick={handleRemoveAttack}>-</button>
-              <button className='selectButton' type='button' onClick={handleAddAttack}>+</button>
+              <button className='selectButton' type='button' onClick={() => dispatchPlayer({ type: 'DECREMENT_ATTACK', attack: 1 })}>-</button>
+              <button className='selectButton' type='button' onClick={() => dispatchPlayer({ type: 'INCREMENT_ATTACK', attack: 1 })}>+</button>
             </div>
           </div>
         </div>
@@ -216,8 +212,8 @@ function DiceContainer() {
       </div>
       <div className='bottomMenu'>
         {warningText && <div className='warning'>{warningText}</div>}
-        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Attack: {playerAttack + playerDiceRoll}</h4>}
-        {playerDiceRoll < 20 && !warningText && <h4>Player Total Attack: {playerDiceRoll > 0 ? playerAttack + playerDiceRoll : 0}</h4>}
+        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Attack: {player.attack + playerDiceRoll}</h4>}
+        {playerDiceRoll < 20 && !warningText && <h4>Player Total Attack: {playerDiceRoll > 0 ? player.attack + playerDiceRoll : 0}</h4>}
         {!warningText && (
           <>
             <h4>Enemy Defense: {enemyDice.roll}</h4>
