@@ -1,10 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import DTwenty from './DTwenty';
 import DTen from './DTen';
 import '../styles/DiceContainer.scss';
 import Sword from './Sword';
 import LifeBarPlayer from './LifeBarPlayer';
 import LifeBarEnemy from './LifeBarEnemy';
+
+function enemyDiceReducer(state, action) {
+  switch (action.type) {
+    case 'INCREMENT':
+      if (state.count < 5) {
+        return {count: state.count + action.amount};
+      } return state;
+    case 'DECREMENT':
+      if (state.count > 1) {
+        return {count: state.count - action.amount};
+      } return state;
+  }
+}
 
 function DiceContainer() {
   // PLAYER STATE
@@ -16,9 +29,9 @@ function DiceContainer() {
   const [dTwenyManual, setDTwentyManual] = useState(0);
 
   // ENEMY STATE
+  const [enemyDiceQty, dispatchEnemyDiceQty] = useReducer(enemyDiceReducer, { count: 1 })
   const [maxEnemyHp, setMaxEnemyHp] = useState(100);
   const [currentEnemyHp, setCurrentEnemyHp] = useState(100);
-  const [enemyDiceQty, setEnemyDiceQty] = useState(1);
   const [enemyDiceRoll, setEnemyDiceRoll] = useState(0);
   const [enemyDice, setEnemyDice] = useState([
     {name: 'diceOne', roll: 1, threshold: 1},
@@ -39,7 +52,7 @@ function DiceContainer() {
       {name: 'diceFour', roll: 0, threshold: 4},
       {name: 'diceFice', roll: 0, threshold: 5}
     ])
-  }, [enemyDiceQty])
+  }, [enemyDiceQty.count])
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -78,7 +91,7 @@ function DiceContainer() {
   const rollEnemyDice = (sides) => {
     let newDice = [...enemyDice]
     enemyDice.forEach((die, index) => {
-      if (die.threshold <= enemyDiceQty) {
+      if (die.threshold <= enemyDiceQty.count) {
         let roll = Math.floor(Math.random() * sides + 1);
         newDice[index].roll = roll;
       }
@@ -97,18 +110,6 @@ function DiceContainer() {
   const handleRemoveAttack = () => {
     if (playerAttack >= 1) {
       setPlayerAttack(playerAttack - 1)
-    }
-  }
-
-  const handleAddDie = () => {
-    if (enemyDiceQty < 5) {
-      setEnemyDiceQty(enemyDiceQty + 1)
-    }
-  }
-
-  const handleRemoveDie = () => {
-    if (enemyDiceQty > 1) {
-      setEnemyDiceQty(enemyDiceQty - 1)
     }
   }
 
@@ -220,15 +221,15 @@ function DiceContainer() {
           <div className='enemyWrapper'>
             <div className='enemyDiceContainer'>
               {enemyDice.map(die => {
-                if (die.threshold <= enemyDiceQty) {
+                if (die.threshold <= enemyDiceQty.count) {
                   return <DTen key={die.name} roll={die.roll} size={2} fontSize={1.2} fontTop={25} />
                 }
                 return null;
               })}
             </div>
             <div className='enemyButtons'>
-              <button className='selectButton' type='button' onClick={handleRemoveDie}>-</button>
-              <button className='selectButton' type='button' onClick={handleAddDie}>+</button>
+              <button className='selectButton' type='button' onClick={() => dispatchEnemyDiceQty({ type: 'DECREMENT', amount: 1 })}>-</button>
+              <button className='selectButton' type='button' onClick={() => dispatchEnemyDiceQty({ type: 'INCREMENT', amount: 1 })}>+</button>
             </div>
           </div>
         </div>
