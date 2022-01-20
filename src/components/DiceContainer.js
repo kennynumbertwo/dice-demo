@@ -8,10 +8,32 @@ import LifeBarPlayer from './LifeBarPlayer';
 import LifeBarEnemy from './LifeBarEnemy';
 import enemyDiceReducer from '../reducers/enemyDice.reducer';
 
+function playerReducer(state, action) {
+  switch (action.type) {
+    case 'SET_MAX_HP':
+      if (action.maxHP > 1) {
+        return { ...state, currentHP: action.maxHP, maxHP: action.maxHP };
+      }
+      if (action.maxHP <= 1) {
+        return { ...state, currentHP: 1, maxHP: action.maxHP };
+      }
+      return { ...state, maxHP: action.maxHP };
+    case 'SET_CURRENT_HP':
+      if (action.currentHP > state.maxHP) {
+        return { ...state, currentHP: state.maxHP }
+      }
+      return { ...state, currentHP: action.currentHP }
+    default:
+      return state;
+  }
+}
+
 function DiceContainer() {
   // PLAYER STATE
-  const [maxHp, setMaxHp] = useState(100);
-  const [currentHp, setCurrentHp] = useState(100);
+  const [player, dispatchPlayer] = useReducer(playerReducer, {
+    maxHP: 100,
+    currentHP: 100,
+  })
   const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
   const [playerAttack, setPlayerAttack] = useState(12);
   const [damageDone, setDamageDone] = useState(0);
@@ -129,12 +151,12 @@ function DiceContainer() {
     <div className='DiceContainerWrapper'>
       <div className='lifeBarContainer'>
         <div className='playerHealth'>
-          <LifeBarPlayer width={44 * 4} current={currentHp} max={maxHp} />
+          <LifeBarPlayer width={44 * 4} current={player.currentHP} max={player.maxHP} />
           <div className='playerHp'>
             <p>Player HP:</p>
-            <input className='hpInput' value={currentHp} type='number' onChange={(e) => setCurrentHp(e.target.value)} />
+            <input className='hpInput' value={player.currentHP} type='number' onChange={(e) => dispatchPlayer({ type: 'SET_CURRENT_HP', currentHP: e.target.value })} />
             <p className='slash'>/</p>
-            <input className='hpInput' value={maxHp} type='number' onChange={(e) => setMaxHp(e.target.value)} />
+            <input className='hpInput' value={player.maxHP} type='number' onChange={(e) => dispatchPlayer({ type: 'SET_MAX_HP', maxHP: e.target.value })} />
           </div>
         </div>
         <div className='enemyHealth'>
