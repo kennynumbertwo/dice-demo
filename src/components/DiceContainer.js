@@ -3,6 +3,7 @@ import DTwenty from './DTwenty';
 import DTen from './DTen';
 import '../styles/DiceContainer.scss';
 import Sword from './Sword';
+import SwordTwo from './SwordTwo';
 import LifeBarPlayer from './LifeBarPlayer';
 import LifeBarEnemy from './LifeBarEnemy';
 import enemyDiceReducer from '../reducers/enemyDice.reducer';
