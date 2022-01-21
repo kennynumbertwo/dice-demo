@@ -1,38 +1,12 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import DTwenty from './DTwenty';
 import DTen from './DTen';
-import '../styles/DiceContainer.scss';
 import Sword from './Sword';
 import LifeBarPlayer from './LifeBarPlayer';
 import LifeBarEnemy from './LifeBarEnemy';
-import enemyDiceReducer from '../reducers/enemyDice.reducer';
-
-function playerReducer(state, action) {
-  switch (action.type) {
-    case 'SET_MAX_HP':
-      if (action.maxHP > 1) {
-        return { ...state, currentHP: action.maxHP, maxHP: action.maxHP };
-      }
-      if (action.maxHP <= 1) {
-        return { ...state, currentHP: 1, maxHP: action.maxHP };
-      }
-      return { ...state, maxHP: action.maxHP };
-    case 'SET_CURRENT_HP':
-      if (action.currentHP > state.maxHP) {
-        return { ...state, currentHP: state.maxHP }
-      }
-      return { ...state, currentHP: action.currentHP }
-    case 'INCREMENT_ATTACK':
-      return { ...state, attack: state.attack + action.attack}
-    case 'DECREMENT_ATTACK':
-      if (state.attack > 0) {
-        return { ...state, attack: state.attack - action.attack}
-      }
-      return state;
-    default:
-      return state;
-  }
-}
+import allDiceReducer from '../reducers/allDice.reducer';
+import playerReducer from '../reducers/player.reducer';
+import '../styles/DiceContainer.scss';
 
 function DiceContainer() {
   // PLAYER STATE
@@ -41,12 +15,11 @@ function DiceContainer() {
     currentHP: 100,
     attack: 0,
   })
-  const [playerDiceRoll, setPlayerDiceRoll] = useState(0);
   const [damageDone, setDamageDone] = useState(0);
-  const [dTwenyManual, setDTwentyManual] = useState(0);
 
-  // ENEMY STATE
-  const [enemyDice, dispatchEnemyDice] = useReducer(enemyDiceReducer, {
+  // DICE STATE
+  const [dTwentyManual, setDTwentyManual] = useState(0);
+  const [allDice, dispatchAllDice] = useReducer(allDiceReducer, {
     count: 1,
     roll: 0,
     dice: [
@@ -55,44 +28,22 @@ function DiceContainer() {
       {name: 'diceThree', roll: 0, threshold: 3},
       {name: 'diceFour', roll: 0, threshold: 4},
       {name: 'diceFive', roll: 0, threshold: 5}
-    ]
+    ],
+    dTwenty: 0,
+    damage: 0
   })
   const [maxEnemyHp, setMaxEnemyHp] = useState(100);
   const [currentEnemyHp, setCurrentEnemyHp] = useState(100);
 
-  // GENERIC STATE
-  const [warningText, setWarningText] = useState('');
-
   useEffect(() => {
-    dispatchEnemyDice({type: 'RESET_DICE'})
-  }, [enemyDice.count])
+    dispatchAllDice({type: 'RESET_DICE'})
+  }, [allDice.count])
 
-  useEffect(() => {
-    if (playerDiceRoll === 20) {
-      const damage = (playerDiceRoll + player.attack - enemyDice.roll) * 2;
-      if (playerDiceRoll !== 0 && damage > 0) {
-        setCurrentEnemyHp(currentEnemyHp - damage);
-      }
-      setDamageDone(damage);
-    }
-    if (playerDiceRoll < 20) {
-      const damage = (playerDiceRoll + player.attack) - enemyDice.roll
-      if (playerDiceRoll !== 0 && damage > 0) {
-        setCurrentEnemyHp(currentEnemyHp - damage);
-      }
-      setDamageDone(damage);
-    }
-  }, [playerDiceRoll]);
-
-  const rollPlayerDie = () => {
-    let roll = Math.floor(Math.random() * 20 + 1);
-    setPlayerDiceRoll(roll);
-  }
-
-  const rollEnemyDice = (sides) => {
-    let newDice = [...enemyDice.dice]
-    enemyDice.dice.forEach((die, index) => {
-      if (die.threshold <= enemyDice.count) {
+  const rollallDice = (sides) => {
+    let newDice = [...allDice.dice]
+    let playerRoll = dTwentyManual > 0 ? dTwentyManual : Math.floor(Math.random() * 20 + 1);
+    allDice.dice.forEach((die, index) => {
+      if (die.threshold <= allDice.count) {
         let roll = Math.floor(Math.random() * sides + 1);
         newDice[index].roll = roll;
       }
@@ -100,36 +51,31 @@ function DiceContainer() {
     const newTotalRoll = newDice.reduce((totalRoll, die) => {
       return die.roll + totalRoll;
     }, 0)
-    dispatchEnemyDice({ type: 'ROLL', roll: newTotalRoll, dice: newDice});
+    setDTwentyManual(0);
+    let damageTest = playerRoll === 20 ? (
+      (playerRoll + player.attack - newTotalRoll) * 2
+    ) : (
+      (playerRoll + player.attack - newTotalRoll)
+    )
+    console.log(damageTest);
+    dispatchAllDice({
+      type: 'ROLL',
+      roll: newTotalRoll,
+      dice: newDice,
+      dTwenty: playerRoll,
+      damage: damageTest
+    });
   }
 
   const handleRoll = () => {
-    if (dTwenyManual > 20) {
-      setWarningText(`Are you sure you rolled a ${dTwenyManual} on a 20 sided die?`)
-      setTimeout(() => {
-        setWarningText('');
-        setPlayerDiceRoll(0);
-        setDTwentyManual(0);
-        dispatchEnemyDice({type: 'RESET_DICE'})
-      }, 2000)
-    } else {
-      if (dTwenyManual > 0) {
-        const roll = Number(dTwenyManual);
-        setDTwentyManual(0);
-        setPlayerDiceRoll(roll);
-      } else {
-        rollPlayerDie();
-      }
-      rollEnemyDice(10);
-    }
+    rollallDice(10);
   }
 
   const handleReset = () => {
     setMaxEnemyHp(100);
     setCurrentEnemyHp(100);
     setDTwentyManual(0);
-    setPlayerDiceRoll(0);
-    dispatchEnemyDice({type: 'RESET_DICE'})
+    dispatchAllDice({type: 'RESET_DICE'})
   }
 
   const handleSetMaxEnemyHp = (e) => {
@@ -141,6 +87,16 @@ function DiceContainer() {
       setCurrentEnemyHp(1)
     }
     setMaxEnemyHp(e.target.value);
+  }
+
+  const handleSetDTwentyManual = (e) => {
+    if (e.target.value > 20) {
+      return setDTwentyManual(20);
+    }
+    if (e.target.value <= 0) {
+      return setDTwentyManual(0);
+    }
+    return setDTwentyManual(Number(e.target.value))
   }
 
   return (
@@ -177,8 +133,8 @@ function DiceContainer() {
       <div className='DiceMainContainer'>
         <div className='playerSide'>
           <div className='diceSide'>
-            <DTwenty roll={playerDiceRoll} size={3.0} fontSize={1.4} fontTop={39} />
-            <input className='diceInput' value={dTwenyManual} type='number' onChange={(e) => setDTwentyManual(e.target.value)} />
+            <DTwenty roll={allDice.dTwenty} size={3.0} fontSize={1.4} fontTop={39} />
+            <input className='diceInput' value={dTwentyManual} type='number' onChange={(e) => handleSetDTwentyManual(e)} />
           </div>
           <h1>+</h1>
           <div className='swordSide'>
@@ -196,34 +152,29 @@ function DiceContainer() {
         <div className='enemySide'>
           <div className='enemyWrapper'>
             <div className='enemyDiceContainer'>
-              {enemyDice.dice.map(die => {
-                if (die.threshold <= enemyDice.count) {
+              {allDice.dice.map(die => {
+                if (die.threshold <= allDice.count) {
                   return <DTen key={die.name} roll={die.roll} size={2} fontSize={1.2} fontTop={25} />
                 }
                 return null;
               })}
             </div>
             <div className='enemyButtons'>
-              <button className='selectButton' type='button' onClick={() => dispatchEnemyDice({ type: 'DECREMENT', amount: 1 })}>-</button>
-              <button className='selectButton' type='button' onClick={() => dispatchEnemyDice({ type: 'INCREMENT', amount: 1 })}>+</button>
+              <button className='selectButton' type='button' onClick={() => dispatchAllDice({ type: 'DECREMENT', amount: 1 })}>-</button>
+              <button className='selectButton' type='button' onClick={() => dispatchAllDice({ type: 'INCREMENT', amount: 1 })}>+</button>
             </div>
           </div>
         </div>
       </div>
       <div className='bottomMenu'>
-        {warningText && <div className='warning'>{warningText}</div>}
-        {playerDiceRoll === 20 && !warningText && <h4>Critical Hit! Player Total Attack: {player.attack + playerDiceRoll}</h4>}
-        {playerDiceRoll < 20 && !warningText && <h4>Player Total Attack: {playerDiceRoll > 0 ? player.attack + playerDiceRoll : 0}</h4>}
-        {!warningText && (
-          <>
-            <h4>Enemy Defense: {enemyDice.roll}</h4>
-            {enemyDice.roll > 0 && damageDone > 0 && (
-              <h4>{ playerDiceRoll === 20 ? 'Critical Damage Done' : 'Damage Done'}: {damageDone > 0 && playerDiceRoll > 0 && damageDone}</h4>
-            )}
-            {enemyDice.roll > 0 && damageDone <= 0 && (
-              <h4>The enemy blocked the attack!</h4>
-            )}
-          </>
+        {allDice.dTwenty === 20 && <h4>Critical Hit! Player Total Attack: {player.attack + allDice.dTwenty}</h4>}
+        {allDice.dTwenty < 20 && <h4>Player Total Attack: {allDice.dTwenty > 0 ? player.attack + allDice.dTwenty : 0}</h4>}
+        <h4>Enemy Defense: {allDice.roll}</h4>
+        {allDice.roll > 0 && allDice.damage > 0 && (
+          <h4>{ allDice.dTwenty === 20 ? 'Critical Damage Done' : 'Damage Done'}: {allDice.damage > 0 && allDice.dTwenty > 0 && allDice.damage}</h4>
+        )}
+        {allDice.roll > 0 && allDice.damage <= 0 && (
+          <h4>The enemy blocked the attack!</h4>
         )}
         <button className='rollButton' type='button' onClick={handleRoll}>Roll!</button>
       </div>

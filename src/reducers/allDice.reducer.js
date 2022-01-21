@@ -1,4 +1,4 @@
-function enemyDiceReducer(state, action) {
+function allDiceReducer(state, action) {
   switch (action.type) {
     case 'INCREMENT':
       if (state.count < 5) {
@@ -9,7 +9,7 @@ function enemyDiceReducer(state, action) {
         return { ...state, count: state.count - action.amount };
       } return state;
     case 'ROLL':
-      return { ...state, roll: action.roll, dice: action.dice };
+      return { ...state, roll: action.roll, dice: action.dice, dTwenty: action.dTwenty, damage: action.damage };
     case 'RESET_DICE':
       return {
         ...state,
@@ -20,10 +20,12 @@ function enemyDiceReducer(state, action) {
           {name: 'diceThree', roll: 0, threshold: 3},
           {name: 'diceFour', roll: 0, threshold: 4},
           {name: 'diceFive', roll: 0, threshold: 5}
-        ]};
+        ],
+        dTwenty: 0
+      };
     default:
       return state;
   }
 }
 
-export default enemyDiceReducer;
+export default allDiceReducer;
