@@ -5,7 +5,7 @@ import Sword from './Sword';
 import LifeBarPlayer from './LifeBarPlayer';
 import allDiceReducer from '../reducers/allDice.reducer';
 import playerReducer from '../reducers/player.reducer';
-import '../styles/DiceContainer.scss';
+import '../styles/DiceContainerMobile.scss';
 
 function DiceContainer() {
   const [isShowingDialog, setIsShowingDialog] = useState(false);
@@ -87,7 +87,7 @@ function DiceContainer() {
         <div className='topLeftContainer'>
           <LifeBarPlayer width={44 * 3} current={player.currentHP} max={player.maxHP} />
           <div className='attackContainer'>
-            <Sword />
+            <Sword width={44} />
             <p>{player.attack}</p>
           </div>
         </div>

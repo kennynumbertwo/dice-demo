@@ -3,15 +3,44 @@
 @import 'node_modules/pixel-borders/src/styles/pixel-borders/pixel-borders-mixins';
 
 .DiceContainerMobile {
-  font-family: $font-stack;
   @include flex-top-column;
-  max-height: 10vh;
+  font-family: $font-stack;
+  max-height: 100vh;
   height: 100vh;
   width: 100vw;
-  color: white;
+  color: $box-font;
   .topInfoContainer {
+    @include flex-top;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
     .topLeftContainer {
+      margin: 10px 0px 0px 10px;
+      svg {
+        margin: 0px 0px 10px 0px;
+      }
       .attackContainer {
+        @include flex-center;
+        @include pixel-box(
+          $corner-size: 1,
+          $border-size: 3px,
+          $border-color: white,
+          $background-color: $box-top
+        );
+        height: 60px;
+        width: 95%;
+        color: $box-font;
+        background-image: linear-gradient($box-top, $box-bottom);
+        &:hover {
+          background-color: $box-top;
+        }
+        p {
+          font-size: 0.9rem;
+          margin: 0px 20px 0px auto;
+        }
+        svg {
+          margin: 0px auto 0px 10px;
+        }
       }
     }
   }
