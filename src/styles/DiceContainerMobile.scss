@@ -76,4 +76,25 @@
       }
     }
   }
+  .middleContainer {
+    flex-grow: 1;
+  }
+  .bottomInfoContainer {
+    @include flex-center;
+    @include pixel-box(
+      $corner-size: 1,
+      $border-size: 3px,
+      $border-color: white,
+      $background-color: $box-top
+    );
+    height: 150px;
+    margin: 0px 0px 85px 0px;
+    width: 94%;
+    color: $box-font;
+    background-image: linear-gradient($box-top, $box-bottom);
+
+    &:hover {
+      background-color: $box-top;
+    }
+  }
 }

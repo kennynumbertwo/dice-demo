@@ -102,6 +102,10 @@ function DiceContainer() {
           </div>
         </div>
       </div>
+      <div className='middleContainer' />
+      <div className='bottomInfoContainer'>
+        buttons
+      </div>
     </div>
   )
 }
