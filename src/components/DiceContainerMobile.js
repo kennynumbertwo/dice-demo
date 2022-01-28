@@ -91,6 +91,16 @@ function DiceContainer() {
             <p>{player.attack}</p>
           </div>
         </div>
+        <div className='topRightContainer'>
+          <div className='dTwentyWrapper'>
+            <DTwenty size={0.7} />
+            <p>{1}x</p>
+          </div>
+          <div className='dTenWrapper'>
+            <DTen size={0.7} />
+            <p>{allDice.count}x</p>
+          </div>
+        </div>
       </div>
     </div>
   )

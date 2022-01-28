@@ -9,16 +9,20 @@
   height: 100vh;
   width: 100vw;
   color: $box-font;
+
   .topInfoContainer {
     @include flex-top;
     width: 100%;
     display: flex;
     justify-content: space-between;
+
     .topLeftContainer {
       margin: 10px 0px 0px 10px;
+
       svg {
         margin: 0px 0px 10px 0px;
       }
+
       .attackContainer {
         @include flex-center;
         @include pixel-box(
@@ -31,16 +35,44 @@
         width: 95%;
         color: $box-font;
         background-image: linear-gradient($box-top, $box-bottom);
+
         &:hover {
           background-color: $box-top;
         }
+
         p {
           font-size: 0.9rem;
           margin: 0px 20px 0px auto;
         }
+
         svg {
           margin: 0px auto 0px 10px;
         }
+      }
+    }
+
+    .topRightContainer {
+      @include flex-center;
+      justify-content: space-evenly;
+      @include pixel-box(
+        $corner-size: 1,
+        $border-size: 3px,
+        $border-color: white,
+        $background-color: $box-top
+      );
+      margin: 10px 10px 0px 0px;
+      height: 97px;
+      width: 45%;
+      color: $box-font;
+      font-size: 0.9rem;
+      background-image: linear-gradient($box-top, $box-bottom);
+
+      &:hover {
+        background-color: $box-top;
+      }
+      p {
+        margin: 15px 0px 0px 0px;
+        padding: 0;
       }
     }
   }
