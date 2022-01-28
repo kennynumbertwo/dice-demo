@@ -18,7 +18,9 @@
 
 @media screen and (max-width: 900px) {
   .App {
-    background-image: url('../../public/forest_small.png');
+    background-image: url('../../public/forest_mobile_bg.png');
     background-size: 100%;
+    background-position: top;
+    background-color: #081f1d;
   }
 }

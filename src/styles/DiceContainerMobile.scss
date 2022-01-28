@@ -1,0 +1,18 @@
+@import 'config';
+@import 'utilities';
+@import 'node_modules/pixel-borders/src/styles/pixel-borders/pixel-borders-mixins';
+
+.DiceContainerMobile {
+  font-family: $font-stack;
+  @include flex-top-column;
+  max-height: 10vh;
+  height: 100vh;
+  width: 100vw;
+  color: white;
+  .topInfoContainer {
+    .topLeftContainer {
+      .attackContainer {
+      }
+    }
+  }
+}
