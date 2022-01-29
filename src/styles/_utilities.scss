@@ -1,3 +1,6 @@
+@import 'config';
+@import 'node_modules/pixel-borders/src/styles/pixel-borders/pixel-borders-mixins';
+
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -15,17 +18,19 @@
   flex-direction: column;
 }
 
-@mixin button-main {
-  color: #fff;
-  border-style: solid;
-  border-width: 4px;
-  border-color: #0c639c;
-  border-radius: 14px;
-  border-image-slice: 2;
-  border-image-width: 1;
-  border-image-outset: 0;
-  border-image-source: url("http://www.w3.org/2000/svg'width='6'height='6'><pathd='M0 2h2v2H0zM2 0h2v2H2zM4 2h2v2H4zM2 4h2v2H2z'fill='%230c639c");
-  position: relative;
-  background-color: #209cee;
-  box-shadow: inset -4px -4px #1081cb;
+@mixin menu-button-mobile {
+  @include pixel-box(
+    $corner-size: 2,
+    $border-size: 2px,
+    $border-color: #000,
+    $background-color: $button-menu-color,
+    $border-inset: true,
+    $border-inset-color: rgb(80, 80, 80)
+  );
+  color: black;
+  transition: 200ms all ease-in-out;
+  z-index: 1;
+  &:hover {
+    cursor: pointer;
+  }
 }

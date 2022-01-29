@@ -20,6 +20,8 @@ function playerReducer(state, action) {
         return { ...state, attack: state.attack - action.attack}
       }
       return state;
+    case 'SET_CURRENT_ATTACK':
+      return { ...state, attack: action.currentAttack}
     default:
       return state;
   }

@@ -88,7 +88,7 @@ function DiceContainer() {
           <LifeBarPlayer width={44 * 3} current={player.currentHP} max={player.maxHP} />
           <div className='attackContainer'>
             <Sword width={44} />
-            <p>{player.attack}</p>
+            <input value={player.attack} onChange={(e) => dispatchPlayer({ type: 'SET_CURRENT_ATTACK', currentAttack: e.target.value })} />
           </div>
         </div>
         <div className='topRightContainer'>
@@ -104,7 +104,16 @@ function DiceContainer() {
       </div>
       <div className='middleContainer' />
       <div className='bottomInfoContainer'>
-        buttons
+        <div className='diceButtonContainer'>
+          <button className='buttonDiceCount' type='button' onClick={() => dispatchAllDice({ type: 'DECREMENT', amount: 1 })}>-</button>
+          <button className='buttonDTenSelect' type='button'>d10</button>
+          <button className='buttonDTwentySelect' type='button'>d20</button>
+          <button className='buttonDiceCount' type='button' onClick={() => dispatchAllDice({ type: 'INCREMENT', amount: 1 })}>+</button>
+        </div>
+        <div className='actionButtonContainer'>
+          <button className='buttonAction' type='button'>Take Hit</button>
+          <button className='buttonAction' type='button' onClick={handleRoll}>Roll</button>
+        </div>
       </div>
     </div>
   )
