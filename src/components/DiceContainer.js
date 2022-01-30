@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import DTwenty from './DTwenty';
 import DTen from './DTen';
-import Sword from './Sword';
 import LifeBarPlayer from './LifeBarPlayer';
 import allDiceReducer from '../reducers/allDice.reducer';
 import playerReducer from '../reducers/player.reducer';
@@ -139,7 +138,6 @@ function DiceContainer() {
                 <p>Attack Power:</p>
                 <p className='attackPower'>{player.attack}</p>
               </div>
-              {/* <Sword width={44 * 2} /> */}
             </div>
             <div className='playerButtons'>
               <button className='attackButton' type='button' onClick={() => dispatchPlayer({ type: 'DECREMENT_ATTACK', attack: 1 })}>-</button>

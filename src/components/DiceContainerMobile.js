@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import DTwenty from './DTwenty';
 import DTen from './DTen';
 import Sword from './Sword';
@@ -37,9 +37,11 @@ function DiceContainer() {
     ]
   })
 
+  const [shownMenu, setShownMenu] = useState('');
+
   useEffect(() => {
     dispatchAllDice({type: 'RESET_DICE'})
-  }, [allDice.dTensCount])
+  }, [allDice.dTensCount, allDice.dTwentiesCount, player.attack])
 
   const rollallDice = () => {
     let newDTwenties = [...allDice.dTwenties]
@@ -67,6 +69,7 @@ function DiceContainer() {
     ) : (
       newTotalDTwentiesRoll + player.attack - newTotalDTensRoll
     )
+    setShownMenu('player');
     dispatchAllDice({
       type: 'ROLL',
       dTens: newDTens,
@@ -77,6 +80,28 @@ function DiceContainer() {
     });
   }
 
+  const getDTwentyString = () => {
+    let dTwentyArray = [];
+    allDice.dTwenties.forEach(die => {
+      if (die.threshold <= allDice.dTwentiesCount) {
+        dTwentyArray.push(die.roll);
+      }
+    });
+    const dTwentyString = dTwentyArray.join(' ');
+    return dTwentyString;
+  }
+
+  const getDTensString = () => {
+    let dTenArray = [];
+    allDice.dTens.forEach(die => {
+      if (die.threshold <= allDice.dTensCount) {
+        dTenArray.push(die.roll);
+      }
+    });
+    const dTenString = dTenArray.join(' ');
+    return dTenString;
+  }
+
   const handleRoll = () => {
     rollallDice();
   }
@@ -84,6 +109,8 @@ function DiceContainer() {
   const handleEnemyRoll = () => {
     const enemyDTwenty = Math.floor(Math.random() * 20 + 1);
     const dSix = Math.floor(Math.random() * 6 + 1);
+    setShownMenu('enemy');
+    dispatchAllDice({type: 'RESET_DICE'})
     dispatchAllDice({ type: 'ROLL_ENEMY', enemyDTwentyRoll: enemyDTwenty, dSixRoll: dSix })
   }
 
@@ -112,7 +139,26 @@ function DiceContainer() {
           </div>
         </div>
       </div>
-      <div className='middleContainer' />
+      <div className='middleContainer'>
+        {shownMenu === 'player' && (
+          <div className='middleDisplayPlayer'>
+            <p>d20s: {getDTwentyString()}</p>
+            <p>d10s: {getDTensString()}</p>
+            <p>Total Attack: {allDice.dTwentiesRoll + player.attack}</p>
+            <p>Enemy Defense: {allDice.dTensRoll}</p>
+            <p>{allDice.damage > 0
+              ? `${allDice.dTwenties[0].roll === 20 ? 'Critical Damage!' : 'Damage Done: '} ${allDice.damage}`
+              : 'Blocked!'}
+            </p>
+          </div>
+        )}
+        {shownMenu === 'enemy' && (
+          <div className='middleDisplayEnemy'>
+            <p>d20: {allDice.enemyDTwentyRoll}</p>
+            <p>d6: {allDice.dSixRoll}</p>
+          </div>
+        )}
+      </div>
       <div className='bottomInfoContainer'>
         <div className='diceButtonContainer'>
           <button className='buttonDiceCount' type='button' onClick={() => dispatchAllDice({ type: `DECREMENT_${allDice.selectedDie}`, amount: 1 })}>-</button>

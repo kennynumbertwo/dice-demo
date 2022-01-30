@@ -48,6 +48,12 @@ function allDiceReducer(state, action) {
           {name: 'diceTwo', roll: 0, threshold: 2},
         ]
       };
+    case 'RESET_DICE_ENEMY':
+      return {
+        ...state,
+        enemyDTwentyRoll: 0,
+        dSixRoll: 0
+      };
     case 'SET_DIE':
       return { ...state, selectedDie: action.selectedDie }
     default:

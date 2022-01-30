@@ -94,7 +94,54 @@
     }
   }
   .middleContainer {
+    @include flex-center;
     flex-grow: 1;
+    width: 65%;
+    .middleDisplayPlayer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      @include pixel-box(
+        $corner-size: 1,
+        $border-size: 3px,
+        $border-color: white,
+        $background-color: $box-top
+      );
+      height: 180px;
+      margin: 0px 0px 0px 0px;
+      width: 100%;
+      font-size: 0.7rem;
+      color: $box-font;
+      background-image: linear-gradient($box-top, $box-bottom);
+      p {
+        margin: 10px 15px;
+      }
+      &:hover {
+        background-color: $box-top;
+      }
+    }
+    .middleDisplayEnemy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      @include pixel-box(
+        $corner-size: 1,
+        $border-size: 3px,
+        $border-color: white,
+        $background-color: $box-top
+      );
+      height: 80px;
+      margin: 0px 0px 0px 0px;
+      width: 50%;
+      font-size: 0.7rem;
+      color: $box-font;
+      background-image: linear-gradient($box-top, $box-bottom);
+      &:hover {
+        background-color: $box-top;
+      }
+    }
   }
   .bottomInfoContainer {
     @include flex-top-column;
