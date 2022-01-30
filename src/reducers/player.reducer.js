@@ -21,7 +21,7 @@ function playerReducer(state, action) {
       }
       return state;
     case 'SET_CURRENT_ATTACK':
-      return { ...state, attack: action.currentAttack}
+      return { ...state, attack: Number(action.currentAttack)}
     default:
       return state;
   }
