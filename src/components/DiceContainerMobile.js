@@ -143,7 +143,7 @@ function DiceContainer() {
         {shownMenu === 'player' && (
           <div className='middleDisplayPlayer'>
             <p>d20s: {getDTwentyString()}</p>
-            <p>d10s: {getDTensString()}</p>
+            <p>d10s: {allDice.dTensCount > 0 ? getDTensString() : 'None'}</p>
             <p>Total Attack: {allDice.dTwentiesRoll + player.attack}</p>
             <p>Enemy Defense: {allDice.dTensRoll}</p>
             <p>{allDice.damage > 0

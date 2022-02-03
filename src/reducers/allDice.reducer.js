@@ -5,7 +5,7 @@ function allDiceReducer(state, action) {
         return { ...state, dTensCount: state.dTensCount + action.amount };
       } return state;
     case 'DECREMENT_D10':
-      if (state.dTensCount > 1) {
+      if (state.dTensCount > 0) {
         return { ...state, dTensCount: state.dTensCount - action.amount };
       } return state;
     case 'INCREMENT_D20':
