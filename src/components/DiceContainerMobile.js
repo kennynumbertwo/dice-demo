@@ -12,7 +12,7 @@ function DiceContainer() {
   const [player, dispatchPlayer] = useReducer(playerReducer, {
     maxHP: 100,
     currentHP: 100,
-    attack: 0,
+    attack: null,
   })
   // DICE STATE
   const [allDice, dispatchAllDice] = useReducer(allDiceReducer, {
@@ -122,7 +122,7 @@ function DiceContainer() {
           <div className='attackContainer'>
             <Sword width={44} />
             <input
-              value={player.attack}
+              value={player.attack > 0 ? player.attack : null}
               type='number'
               onChange={(e) => dispatchPlayer({ type: 'SET_CURRENT_ATTACK', currentAttack: e.target.value })}
             />
