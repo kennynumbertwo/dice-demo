@@ -4,7 +4,7 @@ import bossTreasureList from '../lists/bossTreasureList';
 const stats = ['dodge', 'block', 'body', 'skill', 'mind', 'will', 'luck'];
 
 export default function BossTreasure() {
-  const getRandomItem = () => {
+  const getRandomBossItem = () => {
     const bossTreasureRoll = getDOneHundred();
     return bossTreasureList[`bossTreasure${bossTreasureRoll}`];
   }

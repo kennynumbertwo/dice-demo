@@ -5,13 +5,12 @@ import BossTreasure from './BossTreasure';
 import '../styles/MainScreen.scss';
 
 function MainScreen() {
-  const [isShowingTreasure, setIsShowingTreasure] = useState(true);
-  const [isShowingBossTreasure, setIsShowingBossTreasure] = useState(false);
+  const [isShowing, setIsShowing] = useState('treasure');
+
   return (
     <div className='MainScreenContainer'>
-      <DiceContainerMobile />
-      {isShowingTreasure && <Treasure />}
-      {isShowingBossTreasure && <BossTreasure /> }
+      {isShowing === 'dice' && <DiceContainerMobile />}
+      {isShowing === 'treasure' && <Treasure />}
     </div>
   )
 }

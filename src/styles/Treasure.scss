@@ -3,17 +3,12 @@
 @import 'node_modules/pixel-borders/src/styles/pixel-borders/pixel-borders-mixins';
 
 .TreasureContainer {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 200px;
-  left: auto;
-  right: auto;
-  width: 400px;
-  height: 400px;
+  @include flex-center;
+  height: 300px;
+  width: 85%;
   color: $box-font;
   font-family: $font-stack;
+  font-size: 0.7rem;
   .TreasureBorder {
     display: flex;
     justify-content: flex-start;
@@ -36,15 +31,19 @@
   .itemText {
     line-height: 2rem;
   }
-  .TreasureButton {
-    @include menu-button-mobile;
-    font-family: $font-stack;
-    width: 90px;
-    height: 45px;
-    color: black;
-    font-size: 0.7rem;
-    line-height: 1rem;
-    padding: 0;
+  .TreasureButtonContainer {
+    @include flex-center;
     margin: auto 0px 20px;
+    .TreasureButton {
+      @include menu-button-mobile;
+      font-family: $font-stack;
+      width: 100px;
+      height: 45px;
+      color: black;
+      font-size: 0.5rem;
+      line-height: 1rem;
+      padding: 0;
+      margin: 0px 5px;
+    }
   }
 }
