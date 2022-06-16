@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import treasureList from '../lists/treasureList';
 import bossTreasureList from '../lists/bossTreasureList';
 import '../styles/Treasure.scss';
+import TreasureChest from './TreasureChest';
 
 const stats = ['Dodge', 'Block', 'Body', 'Skill', 'Mind', 'Will', 'Luck'];
 
-export default function Treasure() {
+export default function Treasure({setIsShowing}) {
   const [treasure, setTreasure] = useState(null);
 
   const getRandomBossItem = () => {
@@ -130,17 +131,21 @@ export default function Treasure() {
   }
 
   return (
-    <div className="TreasureContainer">
-      <div className="TreasureBorder">
+    <div className="Treasure">
+      <TreasureChest width={64 * 4} />
+      <div className="TreasureContainer">
         {treasure && (
-          <div className='itemDetails'>
-            {getItemHTML()}
+          <div className="TreasureBorder">
+            <div className='itemDetails'>
+              {getItemHTML()}
+            </div>
           </div>
         )}
-        <div className='TreasureButtonContainer'>
-          <button className='TreasureButton' type='button' onClick={getTreasure}>Open Chest</button>
-          <button className='TreasureButton' type='button' onClick={getBossTreasure}>Open Boss Chest</button>
-        </div>
+      </div>
+      <div className='TreasureButtonContainer'>
+        <button className='TreasureButton' type='button' onClick={() => setIsShowing('dice')}>Dice</button>
+        <button className='TreasureButton' type='button' onClick={getTreasure}>Open Chest</button>
+        <button className='TreasureButton' type='button' onClick={getBossTreasure}>Open Boss Chest</button>
       </div>
     </div>
   )

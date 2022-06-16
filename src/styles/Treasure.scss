@@ -2,10 +2,29 @@
 @import 'utilities';
 @import 'node_modules/pixel-borders/src/styles/pixel-borders/pixel-borders-mixins';
 
+.Treasure {
+  width: 100%;
+  height: 100%;
+  @include flex-top-column;
+  flex-direction: column;
+  svg {
+    animation: treasureIn 1000ms ease-in-out 1;
+  }
+  // background-color: rgba(0, 0, 0, 0.5);
+}
+@keyframes treasureIn {
+  0% {
+    transform: translateY(-200%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
 .TreasureContainer {
   @include flex-center;
+  flex-direction: column;
   height: 300px;
-  width: 85%;
+  width: 75%;
   color: $box-font;
   font-family: $font-stack;
   font-size: 0.7rem;
@@ -17,12 +36,21 @@
     width: 100%;
     height: 100%;
     background-image: linear-gradient($box-top, $box-bottom);
+    animation: treasureMessageIn 1000ms ease-in-out 1;
     @include pixel-box(
       $corner-size: 1,
       $border-size: 3px,
       $border-color: white,
       $background-color: $box-top
     );
+  }
+  @keyframes treasureMessageIn {
+    0% {
+      transform: translateX(200%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
   }
   .itemDetails {
     width: 80%;
@@ -31,19 +59,19 @@
   .itemText {
     line-height: 2rem;
   }
-  .TreasureButtonContainer {
-    @include flex-center;
-    margin: auto 0px 20px;
-    .TreasureButton {
-      @include menu-button-mobile;
-      font-family: $font-stack;
-      width: 100px;
-      height: 45px;
-      color: black;
-      font-size: 0.5rem;
-      line-height: 1rem;
-      padding: 0;
-      margin: 0px 5px;
-    }
+}
+.TreasureButtonContainer {
+  @include flex-center;
+  margin: 20px;
+  .TreasureButton {
+    @include menu-button-mobile;
+    font-family: $font-stack;
+    width: 100px;
+    height: 45px;
+    color: black;
+    font-size: 0.5rem;
+    line-height: 1rem;
+    padding: 0;
+    margin: 0px 15px;
   }
 }

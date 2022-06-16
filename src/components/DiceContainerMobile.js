@@ -6,8 +6,9 @@ import LifeBarPlayer from './LifeBarPlayer';
 import allDiceReducer from '../reducers/allDice.reducer';
 import playerReducer from '../reducers/player.reducer';
 import '../styles/DiceContainerMobile.scss';
+import reanimatedWolf from '../img/reanimated_wolf_alpha.png'
 
-function DiceContainer() {
+function DiceContainer({setIsShowing}) {
   // PLAYER STATE
   const [player, dispatchPlayer] = useReducer(playerReducer, {
     maxHP: 100,
@@ -139,6 +140,7 @@ function DiceContainer() {
           </div>
         </div>
       </div>
+      {/* <img src={reanimatedWolf} alt='wolf' styles={{width: '25%', height: '25%'}} /> */}
       <div className='middleContainer'>
         {shownMenu === 'player' && (
           <div className='middleDisplayPlayer'>
@@ -167,7 +169,7 @@ function DiceContainer() {
           <button className='buttonDiceCount' type='button' onClick={() => dispatchAllDice({ type: `INCREMENT_${allDice.selectedDie}`, amount: 1 })}>+</button>
         </div>
         <div className='actionButtonContainer'>
-          <button className='buttonAction' type='button'>Take Hit</button>
+          <button className='buttonAction' type='button' onClick={() => setIsShowing('treasure')}>Treasure</button>
           <button className='buttonAction' type='button' onClick={handleEnemyRoll}>Enemy Roll</button>
           <button className='buttonAction' type='button' onClick={handleRoll}>Player Roll</button>
         </div>
